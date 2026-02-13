@@ -1,23 +1,35 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/database');
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../config/database");
 
-const Survey = sequelize.define('Survey', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+const Survey = sequelize.define(
+  "Survey",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    createdBy: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "users",
+        key: "id",
+      },
+    },
   },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false
+  {
+    timestamps: true,
+    tableName: "surveys",
   },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  }
-}, {
-  timestamps: true,
-  tableName: 'surveys'
-});
+);
 
 module.exports = Survey;
