@@ -103,16 +103,28 @@ exports.assignManagerCode = async (req, res) => {
     user.assignedManagerCode = assigned_manager_code;
     await user.save();
 
+    // Получаем обновленного пользователя со всеми полями
     const updatedUser = await User.findByPk(id, {
       attributes: { exclude: ["password"] },
     });
 
+    // Возвращаем полный профиль с assignedManagerCode
     res.json({
       message: "Successfully connected to manager",
-      user: updatedUser,
+      user: {
+        id: updatedUser.id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        managerCode: updatedUser.managerCode,
+        assignedManagerCode: updatedUser.assignedManagerCode, // ← Важно!
+        createdAt: updatedUser.createdAt,
+        updatedAt: updatedUser.updatedAt,
+      },
       manager: {
         id: manager.id,
         username: manager.username,
+        email: manager.email,
         managerCode: manager.managerCode,
       },
     });
